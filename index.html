@@ -1,179 +1,169 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Vibe Guard</title>
+  <title>Vibe Guard 🛡️</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
     * {
       box-sizing: border-box;
     }
-
     body {
       margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: #ffffff;
-      color: #1e3a8a; /* dark blue */
+      background: #f9fafb;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+        Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      color: #1f2937;
       display: flex;
       flex-direction: column;
-      min-height: 100vh;
-      justify-content: center;
       align-items: center;
-      padding: 20px;
-    }
-
-    main {
-      background: #f9fbff;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(30, 58, 138, 0.1);
-      width: 100%;
-      max-width: 480px;
-      padding: 32px 36px;
-      text-align: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      padding: 2rem;
     }
 
     h1 {
-      margin-bottom: 8px;
-      font-weight: 600;
-      font-size: 2.25rem;
-      color: #2563eb; /* bright blue */
+      font-weight: 700;
+      font-size: 2.5rem;
+      margin-bottom: 0.25rem;
+      color: #111827;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      user-select: none;
     }
 
-    p.description {
-      margin: 0 0 24px 0;
-      font-size: 1.1rem;
-      color: #3b82f6; /* lighter blue */
+    p.subtitle {
+      color: #6b7280;
+      font-weight: 500;
+      margin-top: 0;
+      margin-bottom: 2rem;
+      font-size: 1.125rem;
+      user-select: none;
     }
 
-    form#upload-form {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      margin-bottom: 30px;
-    }
-
-    input[type="file"] {
-      padding: 12px 14px;
-      border-radius: 8px;
-      border: 1.5px solid #93c5fd;
-      background: #e0efff;
-      color: #1e3a8a;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: border-color 0.2s ease;
-    }
-    input[type="file"]:focus {
-      outline: none;
-      border-color: #2563eb;
-      box-shadow: 0 0 6px #93c5fdaa;
-    }
-
-    button {
-      background-color: #2563eb;
-      border: none;
-      color: white;
-      padding: 14px 0;
-      font-size: 1.15rem;
-      font-weight: 600;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background-color 0.25s ease;
-    }
-    button:hover:not(:disabled) {
-      background-color: #1e40af;
-    }
-    button:disabled {
-      background-color: #93c5fd;
-      cursor: not-allowed;
-    }
-
-    #output {
+    #upload-form {
+      background: #ffffff;
+      padding: 2rem 2.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 20px 40px rgba(31, 41, 55, 0.1);
+      max-width: 480px;
+      width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 12px;
+      gap: 1.5rem;
+      transition: box-shadow 0.3s ease;
+    }
+    #upload-form:hover {
+      box-shadow: 0 30px 60px rgba(31, 41, 55, 0.15);
+    }
+
+    input[type="file"] {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      font-size: 1rem;
+      border: 1.8px solid #d1d5db;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      transition: border-color 0.3s ease;
+    }
+    input[type="file"]:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 6px rgba(59, 130, 246, 0.5);
+    }
+
+    button {
+      background-color: #3b82f6;
+      border: none;
+      color: white;
+      padding: 0.9rem 2rem;
+      font-weight: 600;
+      font-size: 1.125rem;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      width: 100%;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 8px 15px rgba(59, 130, 246, 0.3);
+      user-select: none;
+    }
+    button:hover {
+      background-color: #2563eb;
+      box-shadow: 0 10px 20px rgba(37, 99, 235, 0.5);
+    }
+    button:active {
+      background-color: #1e40af;
+      box-shadow: none;
+    }
+
+    #output {
+      margin-top: 3rem;
+      text-align: center;
+      max-width: 480px;
+      width: 100%;
+      min-height: 280px; /* to prevent layout shift */
     }
 
     #processed-image {
       max-width: 100%;
-      border-radius: 12px;
-      border: 2px solid #bfdbfe;
-      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+      border-radius: 1rem;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
       user-select: none;
     }
 
     #download-btn {
-      background: transparent;
-      border: 2px solid #2563eb;
-      color: #2563eb;
-      padding: 10px 28px;
-      border-radius: 10px;
+      display: inline-block;
+      margin-top: 1.5rem;
+      background-color: #10b981;
+      color: white;
+      padding: 0.75rem 1.75rem;
       font-weight: 600;
+      font-size: 1rem;
+      border-radius: 0.75rem;
       text-decoration: none;
-      cursor: pointer;
-      transition: background-color 0.2s ease, color 0.2s ease;
-      display: none;
+      box-shadow: 0 8px 15px rgba(16, 185, 129, 0.3);
+      transition: background-color 0.3s ease;
+      user-select: none;
     }
     #download-btn:hover {
-      background-color: #2563eb;
-      color: white;
-    }
-
-    footer {
-      margin-top: 40px;
-      font-size: 0.9rem;
-      color: #93c5fd;
-    }
-
-    @media (max-width: 400px) {
-      main {
-        padding: 24px 20px;
-      }
-      h1 {
-        font-size: 1.8rem;
-      }
-      button {
-        font-size: 1rem;
-      }
+      background-color: #059669;
+      box-shadow: 0 10px 20px rgba(5, 150, 105, 0.5);
     }
   </style>
 </head>
 <body>
-  <main>
-    <h1>🛡️ Vibe Guard</h1>
-    <p class="description">Upload your image and we’ll protect it with subtle distortions to disrupt AI nudifiers.</p>
+  <h1>Vibe Guard 🛡️</h1>
+  <p class="subtitle">Protect your images from AI nudifiers with subtle visual distortions.</p>
 
-    <form id="upload-form" autocomplete="off">
-      <input type="file" id="file-input" accept="image/*" required />
-      <button type="submit" id="submit-btn">Protect Image</button>
-    </form>
+  <form id="upload-form">
+    <input type="file" id="file-input" accept="image/*" required />
+    <button type="submit">Protect Image</button>
+  </form>
 
-    <div id="output">
-      <img id="processed-image" src="" alt="Processed image will appear here" />
-      <a id="download-btn" download="protected_image.png">Download Protected Image</a>
-    </div>
-  </main>
-
-  <footer>
-    &copy; 2025 Vibe Guard
-  </footer>
+  <div id="output">
+    <img id="processed-image" src="" alt="Processed image will appear here" />
+    <br />
+    <a id="download-btn" download="protected_image.png" style="display:none;">Download Protected Image</a>
+  </div>
 
   <script>
     const form = document.getElementById('upload-form');
     const fileInput = document.getElementById('file-input');
     const img = document.getElementById('processed-image');
     const downloadBtn = document.getElementById('download-btn');
-    const submitBtn = document.getElementById('submit-btn');
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+
       const file = fileInput.files[0];
       if (!file) return alert("Please upload an image.");
 
-      submitBtn.disabled = true;
-      submitBtn.textContent = "Processing...";
+      // Show uploaded image immediately
+      const uploadedURL = URL.createObjectURL(file);
+      img.src = uploadedURL;
+      downloadBtn.style.display = 'none'; // hide download until processed
 
       const formData = new FormData();
       formData.append('file', file);
@@ -187,15 +177,18 @@
         if (!response.ok) throw new Error("Processing failed.");
 
         const blob = await response.blob();
-        const url = URL.createObjectURL(blob);
-        img.src = url;
-        downloadBtn.href = url;
+
+        // Revoke old object URLs to prevent memory leaks
+        URL.revokeObjectURL(uploadedURL);
+
+        const processedURL = URL.createObjectURL(blob);
+        img.src = processedURL;
+        downloadBtn.href = processedURL;
         downloadBtn.style.display = 'inline-block';
+
       } catch (err) {
         alert("Error: " + err.message);
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = "Protect Image";
+        // If error, keep showing uploaded image
       }
     });
   </script>
