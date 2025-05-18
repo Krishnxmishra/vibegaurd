@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vibe Guard</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #ffffff;
+      color: #1e3a8a; /* dark blue */
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    main {
+      background: #f9fbff;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(30, 58, 138, 0.1);
+      width: 100%;
+      max-width: 480px;
+      padding: 32px 36px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 8px;
+      font-weight: 600;
+      font-size: 2.25rem;
+      color: #2563eb; /* bright blue */
+    }
+
+    p.description {
+      margin: 0 0 24px 0;
+      font-size: 1.1rem;
+      color: #3b82f6; /* lighter blue */
+    }
+
+    form#upload-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    input[type="file"] {
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: 1.5px solid #93c5fd;
+      background: #e0efff;
+      color: #1e3a8a;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: border-color 0.2s ease;
+    }
+    input[type="file"]:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 6px #93c5fdaa;
+    }
+
+    button {
+      background-color: #2563eb;
+      border: none;
+      color: white;
+      padding: 14px 0;
+      font-size: 1.15rem;
+      font-weight: 600;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.25s ease;
+    }
+    button:hover:not(:disabled) {
+      background-color: #1e40af;
+    }
+    button:disabled {
+      background-color: #93c5fd;
+      cursor: not-allowed;
+    }
+
+    #output {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    #processed-image {
+      max-width: 100%;
+      border-radius: 12px;
+      border: 2px solid #bfdbfe;
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+      user-select: none;
+    }
+
+    #download-btn {
+      background: transparent;
+      border: 2px solid #2563eb;
+      color: #2563eb;
+      padding: 10px 28px;
+      border-radius: 10px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 0.2s ease, color 0.2s ease;
+      display: none;
+    }
+    #download-btn:hover {
+      background-color: #2563eb;
+      color: white;
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 0.9rem;
+      color: #93c5fd;
+    }
+
+    @media (max-width: 400px) {
+      main {
+        padding: 24px 20px;
+      }
+      h1 {
+        font-size: 1.8rem;
+      }
+      button {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>🛡️ Vibe Guard</h1>
+    <p class="description">Upload your image and we’ll protect it with subtle distortions to disrupt AI nudifiers.</p>
+
+    <form id="upload-form" autocomplete="off">
+      <input type="file" id="file-input" accept="image/*" required />
+      <button type="submit" id="submit-btn">Protect Image</button>
+    </form>
+
+    <div id="output">
+      <img id="processed-image" src="" alt="Processed image will appear here" />
+      <a id="download-btn" download="protected_image.png">Download Protected Image</a>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2025 Vibe Guard
+  </footer>
+
+  <script>
+    const form = document.getElementById('upload-form');
+    const fileInput = document.getElementById('file-input');
+    const img = document.getElementById('processed-image');
+    const downloadBtn = document.getElementById('download-btn');
+    const submitBtn = document.getElementById('submit-btn');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const file = fileInput.files[0];
+      if (!file) return alert("Please upload an image.");
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Processing...";
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      try {
+        const response = await fetch('https://vibe-gaurd-backend.onrender.com/protect', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!response.ok) throw new Error("Processing failed.");
+
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        img.src = url;
+        downloadBtn.href = url;
+        downloadBtn.style.display = 'inline-block';
+      } catch (err) {
+        alert("Error: " + err.message);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Protect Image";
+      }
+    });
+  </script>
+</body>
+</html>
